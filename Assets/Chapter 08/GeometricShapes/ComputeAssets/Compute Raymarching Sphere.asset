@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc79d8b92366b48cb94ad896749b1a71, type: 3}
+  m_Name: Compute Raymarching Sphere
+  m_EditorClassIdentifier: 
+  shader: {fileID: 7200000, guid: 6e33998ff9f0b471393dadc49583ea68, type: 3}
+  surfaceColor: {r: 1, g: 1, b: 1, a: 1}
+  lightRotation: {x: 30, y: 25, z: 0}
+  lightIntensity: 1

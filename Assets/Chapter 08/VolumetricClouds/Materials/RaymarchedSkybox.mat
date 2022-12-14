@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: RaymarchedSkybox
+  m_Shader: {fileID: 4800000, guid: 6a881705d00d549cb8205d304091e95d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _CloudTex:
+        m_Texture: {fileID: 2800000, guid: 3d61ea01c4b3744ca92f02b454fa71ca, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GradientTex:
+        m_Texture: {fileID: 2800000, guid: 1f2b9f57b1588402682ec442686709dd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BottomSurfaceScale: 0.6
+    - _CloudHeight: 1000
+    - _CloudOpacity: 0.01
+    - _CloudSoftness: 0.05
+    - _CloudThickness: 600
+    - _FogClouds: 0.1
+    - _FogGround: 0.01
+    - _FogSky: 0.1
+    - _TopSurfaceScale: 2.5
+    - _TurbulenceScale: 0.1
+    m_Colors:
+    - _CloudScale: {r: 20000, g: 20000, b: 2500, a: 2500}
+    - _CloudSpeed: {r: 100, g: 0, b: 200, a: 0}
+    - _FogColor: {r: 0.5943396, g: 0.711185, b: 0.7924528, a: 1}
+    - _GroundColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
+    - _SkyColor: {r: 0.22895159, g: 0.36835414, b: 0.990566, a: 1}
+  m_BuildTextureStacks: []

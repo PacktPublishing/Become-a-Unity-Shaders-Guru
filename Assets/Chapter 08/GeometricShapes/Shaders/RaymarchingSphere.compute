@@ -1,0 +1,73 @@
+#pragma kernel CSMain
+
+RWTexture2D<float4> Result;
+
+static const float MINIMUM_HIT_DISTANCE = 0.001f;
+static const float MAXIMUM_TRACE_DISTANCE = 1000.0f;
+static const float EPSILON = 0.001f;
+
+float4x4 CameraToWorld;
+float4x4 CameraInverseProjection;
+
+float3 SurfaceColor;
+float4 DirectionalLight;
+
+float sdfSphere (float3 p, float3 c, float r)
+{
+    return length(p - c) - r;
+}
+
+float mapSceneSdf(float3 p)
+{
+    float sphere = sdfSphere(p, float3(0, 0, 1), 5);
+    return sphere;
+}
+
+float3 estimateNormal(float3 p)
+{
+    float gradX = mapSceneSdf(float3(p.x + EPSILON, p.y, p.z)) - mapSceneSdf(float3(p.x - EPSILON, p.y, p.z));
+    float gradY = mapSceneSdf(float3(p.x, p.y + EPSILON, p.z)) - mapSceneSdf(float3(p.x, p.y - EPSILON, p.z));
+    float gradZ = mapSceneSdf(float3(p.x, p.y, p.z + EPSILON)) - mapSceneSdf(float3(p.x, p.y, p.z - EPSILON));
+    return normalize(float3(gradX, gradY, gradZ));
+}
+
+float3 raymarch(float3 rayOrigin, float3 rayDirection)
+{
+    float totalDistanceTraveled = 0;
+    while (totalDistanceTraveled < MAXIMUM_TRACE_DISTANCE)
+    {
+        float3 currentPosition = rayOrigin + totalDistanceTraveled * rayDirection;
+        float dist = mapSceneSdf(currentPosition);
+
+        if (dist <= MINIMUM_HIT_DISTANCE) 
+        {
+            float3 normal = estimateNormal(currentPosition);
+            float diffuseIntensity = saturate(dot(normal, -DirectionalLight.xyz)) * DirectionalLight.w;
+            return SurfaceColor * diffuseIntensity;
+        }
+
+        totalDistanceTraveled += dist;
+    }
+    return float3(0, 0, 0);
+}
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // transform pixel to [-1,1] range
+    uint width, height;
+    Result.GetDimensions(width, height);
+    float2 uv = float2(id.xy / float2(width, height) * 2 - 1);
+
+    // create ray from camera
+    // . origin is camera position in world space
+    float3 rayOrigin = mul(CameraToWorld, float4(0, 0, 0, 1)).xyz;
+
+    // . direction is perspective projection of the view-space position re-transformed
+    //   in the world space, and renormalized
+    float3 rayDirection = mul(CameraInverseProjection, float4(uv, 0, 1)).xyz;
+    rayDirection = mul(CameraToWorld, float4(rayDirection, 0)).xyz;
+    rayDirection = normalize(rayDirection);
+
+    Result[id.xy] = float4(raymarch(rayOrigin, rayDirection), 1);
+}
