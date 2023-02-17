@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422be464f8d4442e585d4a153d2dee5f, type: 3}
   m_Name: URPComputeFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     passEvent: 300
     computeAsset: {fileID: 11400000, guid: 0a311f7aab19f4b0098819ee1ae0f94c, type: 2}
