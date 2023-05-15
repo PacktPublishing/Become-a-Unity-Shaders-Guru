@@ -5,7 +5,6 @@ Shader "Custom/BlinnPhong"
         _Color ("Color", Color) = (1, 1, 1, 1)
         [Toggle] _UseAmbient ("Use Ambient", Float) = 1
         _Gloss ("Gloss", Range(0, 1)) = 1
-        [HideInInspector] _Metalness ("Metalness", Range(0, 1)) = 0
     }
     SubShader
     {
@@ -18,9 +17,6 @@ Shader "Custom/BlinnPhong"
             // Forward rendering-like behavior)
             Tags { "LightMode" = "ForwardBase" }
 
-            //Blend SrcAlpha OneMinusSrcAlpha
-            //ZWrite On
-
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -31,7 +27,6 @@ Shader "Custom/BlinnPhong"
             float4 _Color;
             float _UseAmbient;
             float _Gloss;
-            float _Metalness;
 
             struct appdata
             {
@@ -82,87 +77,5 @@ Shader "Custom/BlinnPhong"
             }
             ENDCG
         }
-
-        /*Pass
-        {
-            Tags { "LightMode" = "ForwardAdd" }
-            Lighting On
-            Blend One One
-            ZWrite On
-            ZTest LEqual
-
-            CGPROGRAM
-            #pragma vertex vertAdd
-            #pragma fragment fragAdd
-
-            #include "UnityCG.cginc"
-            #include "Lighting.cginc"
-            #include "AutoLight.cginc"
-
-            #pragma multi_compile_fwdadd
-            #pragma multi_compile_fwdadd_fullshadows
-
-            float4 _Color;
-            float _Gloss;
-            float _Metalness;
-
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float3 normal : NORMAL;
-                float2 uv : TEXCOORD0;
-                float4 tangent : TANGENT;
-            };
-
-            struct v2f
-            {
-                float4 vertex : SV_POSITION;
-                float2 uv : TEXCOORD0;
-                float3 normal : TEXCOORD1;
-                float3 worldPos : TEXCOORD2;
-                LIGHTING_COORDS(3,4)
-            };
-
-            v2f vertAdd(appdata v)
-            {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
-                o.normal = UnityObjectToWorldNormal(v.normal);
-                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
-                UNITY_TRANSFER_LIGHTING(o, 0.0);
-                return o;
-            }
-
-            float4 fragAdd(v2f i) : SV_Target
-            {
-                float3 N = normalize(i.normal);
-
-                fixed3 lightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));
-                float3 L = normalize(lightDir);
-                float atten = LIGHT_ATTENUATION(i);
-
-                // diffuse lighting
-                float3 lambert = saturate(dot(N, L));
-                float3 diffuseLight = lambert * atten * _LightColor0.xyz;
-
-                // specular lighting
-                float3 V = normalize(_WorldSpaceCameraPos - i.worldPos);
-                float3 H = normalize(L + V);
-                float specularLight = saturate(dot(H, N)) * (lambert > 0);
-                float specularExponent = exp2(_Gloss * 8) + 2; // to remap from [0,1]
-                specularLight = pow(specularLight, specularExponent);
-                specularLight *= _Gloss; // to approximate energy conservation as in PBR
-
-                specularLight *= _LightColor0.xyz;
-
-                // combine lights
-                float3 fullLight = diffuseLight * _Color;
-                fullLight += specularLight * lerp(float3(1, 1, 1), _Color, _Metalness);
-                return float4(fullLight, 1);
-            }
-            ENDCG
-
-        }*/
     }
 }
