@@ -7,8 +7,9 @@ This is the code repository for [Become a Unity Shaders Guru](https://www.packtp
 **Create advanced game visuals using code and graph**
 
 ## What is this book about?
+Do you really know all the ins-and-outs of Unity shaders? It’s time to step up your Unity game and dive into the new URP render pipeline, the Shader Graph tool, and advanced shading techniques to bring out the beauty of your 2D/3D game projects!
 
-* This book covers the following exciting features:
+This book covers the following exciting features:
 * Understand the main differences between the legacy render pipeline and the SRP
 * Create shaders in Unity with HLSL code and the Shader Graph 10 tool
 * Implement common game shaders for VFX, animation, procedural generation, and more
